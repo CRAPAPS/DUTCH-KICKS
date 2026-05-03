@@ -23,6 +23,10 @@ export const metadata: Metadata = {
   description:
     "Live sneaker, UFC card, and collector resale platform. Powered by Whatnot.",
   metadataBase: new URL("https://dutchkicks.com"),
+  icons: {
+    icon: [{ url: "/icon.png", type: "image/png" }],
+    apple: [{ url: "/apple-icon.png", type: "image/png" }],
+  },
   openGraph: {
     title: "Dutch Kicks",
     description: "The Drop Never Stops",
