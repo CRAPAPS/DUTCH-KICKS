@@ -33,17 +33,26 @@ export default async function HomePage() {
     <>
       {/* ── Hero ── */}
       <section className="relative scanlines min-h-[90vh] flex flex-col items-center justify-center text-center px-6 overflow-hidden">
-        {/* fighter background overlay */}
+        {/* ── Fighter ghost background ── */}
         <div className="absolute inset-0 pointer-events-none select-none">
+          {/* fighter image — pulled up so text in original is off-frame */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/hero-fighter.jpg"
             alt=""
             aria-hidden="true"
-            className="absolute inset-0 w-full h-full object-cover object-center opacity-[0.07] mix-blend-luminosity scale-110"
+            className="absolute inset-0 w-full h-full object-cover opacity-[0.18]"
+            style={{ objectPosition: 'center 28%', filter: 'sepia(0.3) saturate(0.6)' }}
           />
-          {/* radial fade so image bleeds in from center */}
-          <div className="absolute inset-0 bg-radial-[ellipse_at_center] from-transparent via-noir/60 to-noir" />
+          {/* top mask — buries the source text */}
+          <div className="absolute top-0 inset-x-0 h-[38%] bg-gradient-to-b from-noir to-transparent" />
+          {/* bottom mask — buries the source text */}
+          <div className="absolute bottom-0 inset-x-0 h-[42%] bg-gradient-to-t from-noir to-transparent" />
+          {/* left + right vignette */}
+          <div className="absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-noir to-transparent" />
+          <div className="absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-noir to-transparent" />
+          {/* warm gold wash to tie into brand */}
+          <div className="absolute inset-0 bg-gold/[0.04]" />
         </div>
 
         {/* radial glow */}
