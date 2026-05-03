@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import ProductCard from '@/components/ProductCard';
 import { createClient } from '@/lib/supabase/server';
 import type { InventoryItem, FightItem } from '@/types/inventory';
@@ -59,6 +60,21 @@ export default async function HomePage() {
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-gold/8 blur-3xl" />
           <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] rounded-full bg-lime/5 blur-3xl" />
+        </div>
+
+        {/* logo badge */}
+        <div className="relative z-10 mb-8">
+          <div className="relative w-36 h-36 mx-auto">
+            <div className="absolute inset-0 rounded-full bg-gold/20 blur-2xl scale-110" />
+            <Image
+              src="/logo.png"
+              alt="The Dutch — Precision Heat"
+              width={144}
+              height={144}
+              className="relative rounded-full ring-2 ring-gold/40 shadow-[0_0_40px_rgba(212,175,55,0.3)]"
+              priority
+            />
+          </div>
         </div>
 
         <p className="font-display font-bold tracking-[0.4em] text-sm text-white/40 uppercase mb-6 z-10">

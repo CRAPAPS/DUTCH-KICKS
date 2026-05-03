@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import LiveDot from './LiveDot'
 import CartButton from './CartButton'
@@ -10,8 +11,18 @@ export default async function HUDHeader() {
 
   return (
     <header className="fixed top-0 inset-x-0 z-50 h-16 glass border-b border-white/10 flex items-center px-6 gap-4">
-      <Link href="/" className="font-display text-xl font-black tracking-widest text-gradient-gold uppercase shrink-0">
-        Dutch Kicks
+      <Link href="/" className="flex items-center gap-2.5 shrink-0">
+        <Image
+          src="/logo.png"
+          alt="Dutch Kicks"
+          width={44}
+          height={44}
+          className="rounded-full ring-1 ring-white/10"
+          priority
+        />
+        <span className="font-display text-xl font-black tracking-widest text-gradient-gold uppercase leading-none">
+          Dutch Kicks
+        </span>
       </Link>
 
       <nav className="flex gap-6 ml-6 text-sm font-medium text-white/60">
