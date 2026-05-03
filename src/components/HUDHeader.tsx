@@ -1,4 +1,11 @@
-export default function HUDHeader() {
+import { createClient } from '@/lib/supabase/server'
+import LiveDot from './LiveDot'
+
+export default async function HUDHeader() {
+  const supabase = await createClient()
+  const { data } = await supabase.from('show_status').select('is_live').single()
+  const isLive = data?.is_live ?? false
+
   return (
     <header className="fixed top-0 inset-x-0 z-50 h-16 glass border-b border-white/10 flex items-center px-6 gap-4">
       <span className="font-display text-xl font-black tracking-widest text-gradient-gold uppercase">
@@ -10,10 +17,9 @@ export default function HUDHeader() {
         <a href="/inventory" className="hover:text-white transition-colors">Inventory</a>
       </nav>
 
-      <div className="ml-auto flex items-center gap-2 text-xs font-semibold tracking-widest uppercase text-lime">
-        <span className="live-dot" />
-        Live Now
+      <div className="ml-auto">
+        <LiveDot initialIsLive={isLive} />
       </div>
     </header>
-  );
+  )
 }

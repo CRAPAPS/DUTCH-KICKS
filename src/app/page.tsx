@@ -1,22 +1,32 @@
 import Link from 'next/link';
 import ProductCard from '@/components/ProductCard';
-import { MOCK_INVENTORY } from '@/lib/mock-inventory';
+import { createClient } from '@/lib/supabase/server';
+import type { InventoryItem, FightItem } from '@/types/inventory';
 
-const STATS = [
-  { label: 'Sneakers', count: MOCK_INVENTORY.filter(i => i.category === 'kicks').length, accent: 'text-lime' },
-  { label: 'Skate',    count: MOCK_INVENTORY.filter(i => i.category === 'skate').length, accent: 'text-lime' },
-  { label: 'UFC Cards', count: MOCK_INVENTORY.filter(i => i.category === 'fight').length, accent: 'text-gold' },
-  { label: 'Comics',   count: MOCK_INVENTORY.filter(i => i.category === 'comics').length, accent: 'text-white/60' },
-];
+export default async function HomePage() {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from('inventory')
+    .select('*')
+    .eq('status', 'available')
+    .order('created_at', { ascending: false });
 
-const TICKER_ITEMS = MOCK_INVENTORY.map(i => i.title);
+  const items = (data ?? []) as InventoryItem[];
 
-const FEATURED = [
-  ...MOCK_INVENTORY.filter(i => i.category === 'fight' && i.metadata.autograph).slice(0, 2),
-  ...MOCK_INVENTORY.filter(i => i.category === 'kicks').slice(0, 2),
-];
+  const stats = [
+    { label: 'Sneakers',  count: items.filter(i => i.category === 'kicks').length,  accent: 'text-lime' },
+    { label: 'Skate',     count: items.filter(i => i.category === 'skate').length,   accent: 'text-lime' },
+    { label: 'UFC Cards', count: items.filter(i => i.category === 'fight').length,   accent: 'text-gold' },
+    { label: 'Comics',    count: items.filter(i => i.category === 'comics').length,  accent: 'text-white/60' },
+  ];
 
-export default function HomePage() {
+  const tickerItems = items.map(i => i.title);
+
+  const featured: InventoryItem[] = [
+    ...items.filter((i): i is FightItem => i.category === 'fight' && i.metadata.autograph).slice(0, 2),
+    ...items.filter(i => i.category === 'kicks').slice(0, 2),
+  ];
+
   return (
     <>
       {/* ── Hero ── */}
@@ -45,7 +55,7 @@ export default function HomePage() {
 
         {/* stat row */}
         <div className="flex flex-wrap gap-6 justify-center mt-12 z-10">
-          {STATS.map(s => (
+          {stats.map(s => (
             <div key={s.label} className="glass rounded-xl px-6 py-4 text-center min-w-[100px]">
               <div className={`font-display font-black text-3xl ${s.accent}`}>{s.count}</div>
               <div className="text-white/40 text-xs tracking-widest uppercase mt-1">{s.label}</div>
@@ -73,36 +83,40 @@ export default function HomePage() {
       </section>
 
       {/* ── Ticker ── */}
-      <div className="overflow-hidden border-y border-white/5 bg-white/2 py-3">
-        <div className="ticker-track flex gap-12 whitespace-nowrap text-white/30 text-xs font-mono tracking-widest uppercase">
-          {[...TICKER_ITEMS, ...TICKER_ITEMS].map((name, i) => (
-            <span key={i}>
-              <span className="text-gold mr-3">◆</span>{name}
-            </span>
-          ))}
+      {tickerItems.length > 0 && (
+        <div className="overflow-hidden border-y border-white/5 bg-white/2 py-3">
+          <div className="ticker-track flex gap-12 whitespace-nowrap text-white/30 text-xs font-mono tracking-widest uppercase">
+            {[...tickerItems, ...tickerItems].map((name, i) => (
+              <span key={i}>
+                <span className="text-gold mr-3">◆</span>{name}
+              </span>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* ── Featured ── */}
-      <section className="max-w-6xl mx-auto px-6 py-20">
-        <div className="flex items-baseline justify-between mb-8">
-          <h2 className="font-display font-black text-3xl text-gradient-gold uppercase tracking-wide">
-            Featured Drops
-          </h2>
-          <Link
-            href="/inventory"
-            className="text-sm font-mono text-white/40 hover:text-lime transition-colors"
-          >
-            View all →
-          </Link>
-        </div>
+      {featured.length > 0 && (
+        <section className="max-w-6xl mx-auto px-6 py-20">
+          <div className="flex items-baseline justify-between mb-8">
+            <h2 className="font-display font-black text-3xl text-gradient-gold uppercase tracking-wide">
+              Featured Drops
+            </h2>
+            <Link
+              href="/inventory"
+              className="text-sm font-mono text-white/40 hover:text-lime transition-colors"
+            >
+              View all →
+            </Link>
+          </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {FEATURED.map(item => (
-            <ProductCard key={item.id} item={item} />
-          ))}
-        </div>
-      </section>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {featured.map(item => (
+              <ProductCard key={item.id} item={item} />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* ── Category cards ── */}
       <section className="max-w-6xl mx-auto px-6 pb-24 grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -110,7 +124,7 @@ export default function HomePage() {
           <div className="text-5xl mb-4">👟</div>
           <div className="font-display font-black text-2xl text-lime uppercase tracking-wide">Kicks</div>
           <div className="text-white/40 text-sm mt-1">
-            {MOCK_INVENTORY.filter(i => i.category === 'kicks').length} pairs dropping
+            {items.filter(i => i.category === 'kicks').length} pairs dropping
           </div>
         </Link>
 
@@ -118,7 +132,7 @@ export default function HomePage() {
           <div className="text-5xl mb-4">🥊</div>
           <div className="font-display font-black text-2xl text-gold uppercase tracking-wide">Fight Cards</div>
           <div className="text-white/40 text-sm mt-1">
-            {MOCK_INVENTORY.filter(i => i.category === 'fight').length} UFC grails
+            {items.filter(i => i.category === 'fight').length} UFC grails
           </div>
         </Link>
 
@@ -126,7 +140,7 @@ export default function HomePage() {
           <div className="text-5xl mb-4">🛹</div>
           <div className="font-display font-black text-2xl text-lime uppercase tracking-wide">Skate</div>
           <div className="text-white/40 text-sm mt-1">
-            {MOCK_INVENTORY.filter(i => i.category === 'skate').length} skate drops
+            {items.filter(i => i.category === 'skate').length} skate drops
           </div>
         </Link>
       </section>

@@ -1,8 +1,8 @@
 import { Suspense } from 'react';
 import ProductCard from '@/components/ProductCard';
 import InventoryFilter from '@/components/InventoryFilter';
-import { MOCK_INVENTORY } from '@/lib/mock-inventory';
-import type { ItemCategory } from '@/types/inventory';
+import { createClient } from '@/lib/supabase/server';
+import type { InventoryItem, ItemCategory } from '@/types/inventory';
 
 interface Props {
   searchParams: Promise<{ category?: string }>;
@@ -12,9 +12,16 @@ export default async function InventoryPage({ searchParams }: Props) {
   const { category } = await searchParams;
   const active = category as ItemCategory | undefined;
 
-  const items = active
-    ? MOCK_INVENTORY.filter(i => i.category === active)
-    : MOCK_INVENTORY;
+  const supabase = await createClient();
+  let query = supabase
+    .from('inventory')
+    .select('*')
+    .eq('status', 'available')
+    .order('created_at', { ascending: false });
+  if (active) query = query.eq('category', active);
+  const { data } = await query;
+
+  const items = (data ?? []) as InventoryItem[];
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-12">
