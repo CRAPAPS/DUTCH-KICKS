@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Barlow_Condensed, Inter } from "next/font/google";
 import "./globals.css";
 import HUDHeader from "@/components/HUDHeader";
+import Providers from "@/components/Providers";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -43,8 +44,10 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${barlow.variable} noise bg-noir text-white antialiased`}
       >
-        <HUDHeader />
-        <main className="min-h-screen pt-16">{children}</main>
+        <Providers>
+          <HUDHeader />
+          <main className="min-h-screen pt-16">{children}</main>
+        </Providers>
       </body>
     </html>
   );
