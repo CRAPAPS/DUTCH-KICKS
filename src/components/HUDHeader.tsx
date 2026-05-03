@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import LiveDot from './LiveDot'
 
@@ -13,8 +14,8 @@ export default async function HUDHeader() {
       </span>
 
       <nav className="flex gap-6 ml-8 text-sm font-medium text-white/60">
-        <a href="/" className="hover:text-white transition-colors">Home</a>
-        <a href="/inventory" className="hover:text-white transition-colors">Inventory</a>
+        <Link href="/" className="hover:text-white transition-colors">Home</Link>
+        <Link href="/inventory" className="hover:text-white transition-colors">Inventory</Link>
       </nav>
 
       <div className="ml-auto">
