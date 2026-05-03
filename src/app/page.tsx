@@ -14,10 +14,12 @@ export default async function HomePage() {
   const items = (data ?? []) as InventoryItem[];
 
   const stats = [
-    { label: 'Sneakers',  count: items.filter(i => i.category === 'kicks').length,  accent: 'text-lime' },
-    { label: 'Skate',     count: items.filter(i => i.category === 'skate').length,   accent: 'text-lime' },
-    { label: 'UFC Cards', count: items.filter(i => i.category === 'fight').length,   accent: 'text-gold' },
-    { label: 'Comics',    count: items.filter(i => i.category === 'comics').length,  accent: 'text-white/60' },
+    { label: 'Sneakers',   count: items.filter(i => i.category === 'kicks').length,      accent: 'text-lime' },
+    { label: 'UFC Cards',  count: items.filter(i => i.category === 'fight').length,      accent: 'text-gold' },
+    { label: 'Baseball',   count: items.filter(i => i.category === 'baseball').length,   accent: 'text-gold' },
+    { label: 'Basketball', count: items.filter(i => i.category === 'basketball').length, accent: 'text-orange' },
+    { label: 'Watches',    count: items.filter(i => i.category === 'watches').length,    accent: 'text-white/70' },
+    { label: 'Skate',      count: items.filter(i => i.category === 'skate').length,      accent: 'text-lime' },
   ];
 
   const tickerItems = items.map(i => i.title);
@@ -31,9 +33,22 @@ export default async function HomePage() {
     <>
       {/* ── Hero ── */}
       <section className="relative scanlines min-h-[90vh] flex flex-col items-center justify-center text-center px-6 overflow-hidden">
+        {/* fighter background overlay */}
+        <div className="absolute inset-0 pointer-events-none select-none">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/hero-fighter.jpg"
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover object-center opacity-[0.07] mix-blend-luminosity scale-110"
+          />
+          {/* radial fade so image bleeds in from center */}
+          <div className="absolute inset-0 bg-radial-[ellipse_at_center] from-transparent via-noir/60 to-noir" />
+        </div>
+
         {/* radial glow */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-gold/5 blur-3xl" />
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-gold/8 blur-3xl" />
           <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] rounded-full bg-lime/5 blur-3xl" />
         </div>
 
@@ -119,29 +134,41 @@ export default async function HomePage() {
       )}
 
       {/* ── Category cards ── */}
-      <section className="max-w-6xl mx-auto px-6 pb-24 grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <Link href="/inventory?category=kicks" className="glass-lime rounded-2xl p-8 group hover:opacity-90 transition-all">
-          <div className="text-5xl mb-4">👟</div>
-          <div className="font-display font-black text-2xl text-lime uppercase tracking-wide">Kicks</div>
-          <div className="text-white/40 text-sm mt-1">
-            {items.filter(i => i.category === 'kicks').length} pairs dropping
-          </div>
+      <section className="max-w-6xl mx-auto px-6 pb-24 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4">
+        <Link href="/inventory?category=kicks" className="glass-lime rounded-2xl p-6 group hover:opacity-90 transition-all">
+          <div className="text-4xl mb-3">👟</div>
+          <div className="font-display font-black text-xl text-lime uppercase tracking-wide">Kicks</div>
+          <div className="text-white/40 text-sm mt-1">{items.filter(i => i.category === 'kicks').length} pairs</div>
         </Link>
 
-        <Link href="/inventory?category=fight" className="glass-gold rounded-2xl p-8 group hover:opacity-90 transition-all">
-          <div className="text-5xl mb-4">🥊</div>
-          <div className="font-display font-black text-2xl text-gold uppercase tracking-wide">Fight Cards</div>
-          <div className="text-white/40 text-sm mt-1">
-            {items.filter(i => i.category === 'fight').length} UFC grails
-          </div>
+        <Link href="/inventory?category=fight" className="glass-gold rounded-2xl p-6 group hover:opacity-90 transition-all">
+          <div className="text-4xl mb-3">🥊</div>
+          <div className="font-display font-black text-xl text-gold uppercase tracking-wide">UFC Cards</div>
+          <div className="text-white/40 text-sm mt-1">{items.filter(i => i.category === 'fight').length} grails</div>
         </Link>
 
-        <Link href="/inventory?category=skate" className="glass rounded-2xl p-8 group hover:opacity-90 transition-all border border-lime/20">
-          <div className="text-5xl mb-4">🛹</div>
-          <div className="font-display font-black text-2xl text-lime uppercase tracking-wide">Skate</div>
-          <div className="text-white/40 text-sm mt-1">
-            {items.filter(i => i.category === 'skate').length} skate drops
-          </div>
+        <Link href="/inventory?category=baseball" className="glass-gold rounded-2xl p-6 group hover:opacity-90 transition-all">
+          <div className="text-4xl mb-3">⚾</div>
+          <div className="font-display font-black text-xl text-gold uppercase tracking-wide">Baseball</div>
+          <div className="text-white/40 text-sm mt-1">{items.filter(i => i.category === 'baseball').length} cards</div>
+        </Link>
+
+        <Link href="/inventory?category=basketball" className="glass-orange rounded-2xl p-6 group hover:opacity-90 transition-all">
+          <div className="text-4xl mb-3">🏀</div>
+          <div className="font-display font-black text-xl text-orange uppercase tracking-wide">Basketball</div>
+          <div className="text-white/40 text-sm mt-1">{items.filter(i => i.category === 'basketball').length} cards</div>
+        </Link>
+
+        <Link href="/inventory?category=watches" className="glass rounded-2xl p-6 group hover:opacity-90 transition-all border border-white/15">
+          <div className="text-4xl mb-3">⌚</div>
+          <div className="font-display font-black text-xl text-white/80 uppercase tracking-wide">Watches</div>
+          <div className="text-white/40 text-sm mt-1">{items.filter(i => i.category === 'watches').length} timepieces</div>
+        </Link>
+
+        <Link href="/inventory?category=skate" className="glass rounded-2xl p-6 group hover:opacity-90 transition-all border border-lime/20">
+          <div className="text-4xl mb-3">🛹</div>
+          <div className="font-display font-black text-xl text-lime uppercase tracking-wide">Skate</div>
+          <div className="text-white/40 text-sm mt-1">{items.filter(i => i.category === 'skate').length} drops</div>
         </Link>
       </section>
     </>

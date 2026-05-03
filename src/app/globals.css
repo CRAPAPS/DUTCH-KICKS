@@ -9,6 +9,8 @@
   --color-gold-dim:  #9a7e25;
   --color-lime:      #CCFF00;
   --color-lime-dim:  #8aaa00;
+  --color-orange:    #FF6B1A;
+  --color-orange-dim:#b34a10;
   --color-muted:     #4a4a4a;
   --color-border:    #2a2a2a;
 
@@ -84,9 +86,16 @@ body {
 }
 
 /* ── Glow utilities ── */
-.glow-gold { box-shadow: 0 0 24px rgba(212,175,55,0.35), 0 0 60px rgba(212,175,55,0.12); }
-.glow-lime  { box-shadow: 0 0 24px rgba(204,255,0,0.35),  0 0 60px rgba(204,255,0,0.12); }
-.glow-white { box-shadow: 0 0 24px rgba(255,255,255,0.12); }
+.glow-gold   { box-shadow: 0 0 24px rgba(212,175,55,0.35),  0 0 60px rgba(212,175,55,0.12); }
+.glow-lime   { box-shadow: 0 0 24px rgba(204,255,0,0.35),   0 0 60px rgba(204,255,0,0.12); }
+.glow-orange { box-shadow: 0 0 24px rgba(255,107,26,0.35),  0 0 60px rgba(255,107,26,0.12); }
+.glow-white  { box-shadow: 0 0 24px rgba(255,255,255,0.12); }
+
+.glass-orange {
+  background: rgba(255,107,26,0.05);
+  backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255,107,26,0.2);
+}
 
 /* ── Live pulse dot ── */
 @keyframes live-pulse {

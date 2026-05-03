@@ -4,21 +4,26 @@ import { motion } from 'framer-motion';
 import type { InventoryItem } from '@/types/inventory';
 
 const CATEGORY_LABEL: Record<string, string> = {
-  kicks: 'KICKS',
-  skate: 'SKATE',
-  fight: 'FIGHT',
-  comics: 'COMICS',
+  kicks:      'KICKS',
+  skate:      'SKATE',
+  fight:      'UFC',
+  comics:     'COMICS',
+  baseball:   'BASEBALL',
+  basketball: 'HOOPS',
+  watches:    'WATCHES',
 };
 
 function categoryAccent(category: string) {
-  if (category === 'fight') return 'ring-gold glow-gold border-gold/30';
-  if (category === 'kicks' || category === 'skate') return 'ring-lime glow-lime border-lime/20';
+  if (category === 'fight' || category === 'baseball') return 'ring-gold glow-gold border-gold/30';
+  if (category === 'kicks' || category === 'skate')    return 'ring-lime glow-lime border-lime/20';
+  if (category === 'basketball')                       return 'ring-orange glow-orange border-orange/30';
   return 'ring-white/30 border-white/10';
 }
 
 function categoryBadge(category: string) {
-  if (category === 'fight') return 'bg-gold/10 text-gold border border-gold/40';
-  if (category === 'kicks' || category === 'skate') return 'bg-lime/10 text-lime border border-lime/40';
+  if (category === 'fight' || category === 'baseball') return 'bg-gold/10 text-gold border border-gold/40';
+  if (category === 'kicks' || category === 'skate')    return 'bg-lime/10 text-lime border border-lime/40';
+  if (category === 'basketball')                       return 'bg-orange/10 text-orange border border-orange/40';
   return 'bg-white/5 text-white/60 border border-white/20';
 }
 
@@ -32,6 +37,17 @@ function metaLine(item: InventoryItem): string {
     const auto = item.metadata.autograph ? ' · AUTO' : '';
     return `${serial}${auto} · ${item.metadata.set_name}`;
   }
+  if (item.category === 'baseball' || item.category === 'basketball') {
+    const serial = item.metadata.serial ? ` #${item.metadata.serial}` : '';
+    const auto = item.metadata.autograph ? ' · AUTO' : '';
+    const grade = item.metadata.grade ? ` · ${item.metadata.grade}` : '';
+    return `${item.metadata.year}${serial}${auto}${grade} · ${item.metadata.set_name}`;
+  }
+  if (item.category === 'watches') {
+    const ref = item.metadata.reference ? ` · ${item.metadata.reference}` : '';
+    const bp = item.metadata.box_papers ? ' · Box+Papers' : '';
+    return `${item.metadata.brand} ${item.metadata.model}${ref} · ${item.metadata.condition}${bp}`;
+  }
   if (item.category === 'comics') {
     const grade = item.metadata.grade ? ` · ${item.metadata.grade}` : '';
     return `#${item.metadata.issue}${grade} · ${item.metadata.publisher}`;
@@ -41,16 +57,22 @@ function metaLine(item: InventoryItem): string {
 
 function ImagePlaceholder({ category }: { category: string }) {
   const gradients: Record<string, string> = {
-    kicks: 'from-lime/10 to-noir-2',
-    skate: 'from-lime/10 to-noir-2',
-    fight: 'from-gold/10 to-noir-2',
-    comics: 'from-white/5 to-noir-2',
+    kicks:      'from-lime/10 to-noir-2',
+    skate:      'from-lime/10 to-noir-2',
+    fight:      'from-gold/10 to-noir-2',
+    comics:     'from-white/5 to-noir-2',
+    baseball:   'from-gold/10 to-noir-2',
+    basketball: 'from-orange/10 to-noir-2',
+    watches:    'from-white/8 to-noir-2',
   };
   const icons: Record<string, string> = {
-    kicks: '👟',
-    skate: '🛹',
-    fight: '🥊',
-    comics: '📚',
+    kicks:      '👟',
+    skate:      '🛹',
+    fight:      '🥊',
+    comics:     '📚',
+    baseball:   '⚾',
+    basketball: '🏀',
+    watches:    '⌚',
   };
   return (
     <div className={`w-full h-full bg-gradient-to-br ${gradients[category] ?? 'from-white/5 to-noir-2'} flex items-center justify-center`}>
@@ -61,7 +83,10 @@ function ImagePlaceholder({ category }: { category: string }) {
 
 export default function ProductCard({ item }: { item: InventoryItem }) {
   const accent = categoryAccent(item.category);
-  const badge = categoryBadge(item.category);
+  const badge  = categoryBadge(item.category);
+
+  const isAuto = (item.category === 'fight' || item.category === 'baseball' || item.category === 'basketball')
+    && item.metadata.autograph;
 
   return (
     <motion.div
@@ -83,7 +108,6 @@ export default function ProductCard({ item }: { item: InventoryItem }) {
           <ImagePlaceholder category={item.category} />
         )}
 
-        {/* status badge */}
         {item.status !== 'available' && (
           <div className="absolute inset-0 bg-noir/70 flex items-center justify-center">
             <span className="text-white/80 font-display font-bold text-lg uppercase tracking-widest">
@@ -92,7 +116,6 @@ export default function ProductCard({ item }: { item: InventoryItem }) {
           </div>
         )}
 
-        {/* category pill */}
         <span className={`absolute top-2 left-2 text-[10px] font-display font-bold tracking-widest px-2 py-0.5 rounded-full ${badge}`}>
           {CATEGORY_LABEL[item.category]}
         </span>
@@ -115,7 +138,7 @@ export default function ProductCard({ item }: { item: InventoryItem }) {
             <span className="text-white/30 text-sm font-mono">TBD</span>
           )}
 
-          {(item.category === 'fight' && item.metadata.autograph) && (
+          {isAuto && (
             <span className="text-[10px] font-bold tracking-widest text-gold border border-gold/40 rounded-full px-2 py-0.5">
               AUTO
             </span>

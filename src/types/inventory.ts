@@ -1,5 +1,5 @@
-export type ItemStatus = 'available' | 'sold' | 'pending';
-export type ItemCategory = 'kicks' | 'skate' | 'fight' | 'comics';
+export type ItemStatus   = 'available' | 'sold' | 'pending';
+export type ItemCategory = 'kicks' | 'skate' | 'fight' | 'comics' | 'baseball' | 'basketball' | 'watches';
 
 interface BaseItem {
   id: string;
@@ -31,4 +31,19 @@ export interface ComicsItem extends BaseItem {
   metadata: { issue: number; grade?: string; key_issue: boolean; publisher: string };
 }
 
-export type InventoryItem = KicksItem | SkateItem | FightItem | ComicsItem;
+export interface BaseballItem extends BaseItem {
+  category: 'baseball';
+  metadata: { player: string; year: number; set_name: string; serial: string | null; autograph: boolean; grade?: string; parallel?: string };
+}
+
+export interface BasketballItem extends BaseItem {
+  category: 'basketball';
+  metadata: { player: string; year: number; set_name: string; serial: string | null; autograph: boolean; grade?: string; parallel?: string };
+}
+
+export interface WatchItem extends BaseItem {
+  category: 'watches';
+  metadata: { brand: string; model: string; reference?: string; condition: string; box_papers?: boolean };
+}
+
+export type InventoryItem = KicksItem | SkateItem | FightItem | ComicsItem | BaseballItem | BasketballItem | WatchItem;

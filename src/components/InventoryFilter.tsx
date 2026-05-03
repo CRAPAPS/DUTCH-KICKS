@@ -4,17 +4,21 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import type { ItemCategory } from '@/types/inventory';
 
 const FILTERS: { key: ItemCategory | 'all'; label: string }[] = [
-  { key: 'all',   label: 'ALL'    },
-  { key: 'kicks', label: 'KICKS'  },
-  { key: 'skate', label: 'SKATE'  },
-  { key: 'fight', label: 'FIGHT'  },
-  { key: 'comics', label: 'COMICS' },
+  { key: 'all',        label: 'ALL'        },
+  { key: 'kicks',      label: 'KICKS'      },
+  { key: 'skate',      label: 'SKATE'      },
+  { key: 'fight',      label: 'UFC'        },
+  { key: 'baseball',   label: 'BASEBALL'   },
+  { key: 'basketball', label: 'BASKETBALL' },
+  { key: 'watches',    label: 'WATCHES'    },
+  { key: 'comics',     label: 'COMICS'     },
 ];
 
 function activeClass(isActive: boolean, key: string) {
   if (!isActive) return 'glass text-white/40 border border-white/10 hover:text-white/80 hover:border-white/30 transition-all';
-  if (key === 'fight')  return 'bg-gold text-noir font-black border border-gold glow-gold';
-  if (key === 'kicks' || key === 'skate') return 'bg-lime text-noir font-black border border-lime glow-lime';
+  if (key === 'fight' || key === 'baseball') return 'bg-gold text-noir font-black border border-gold glow-gold';
+  if (key === 'kicks' || key === 'skate')    return 'bg-lime text-noir font-black border border-lime glow-lime';
+  if (key === 'basketball')                  return 'bg-orange text-noir font-black border border-orange glow-orange';
   return 'bg-white text-noir font-black border border-white';
 }
 
