@@ -85,16 +85,21 @@ function ImagePlaceholder({ category }: { category: string }) {
 export default function ProductCard({ item }: { item: InventoryItem }) {
   const accent = categoryAccent(item.category);
   const badge  = categoryBadge(item.category);
-  const [showLabel, setShowLabel] = useState(false);
 
   const isAuto = (item.category === 'fight' || item.category === 'baseball' || item.category === 'basketball')
     && item.metadata.autograph;
 
-  const labelImageUrl = (item.category === 'kicks' || item.category === 'skate')
-    ? (item.metadata as { label_image_url?: string | null }).label_image_url
-    : null;
+  // Universal gallery: primary image + any extras stored in metadata
+  const meta = item.metadata as { label_image_url?: string | null; gallery?: string[] };
+  const extras: string[] = meta.gallery?.length
+    ? meta.gallery
+    : meta.label_image_url
+      ? [meta.label_image_url]
+      : [];
+  const allImages = [item.image_url, ...extras].filter((u): u is string => !!u);
 
-  const displayUrl = showLabel && labelImageUrl ? labelImageUrl : item.image_url;
+  const [activeUrl, setActiveUrl] = useState<string | null>(item.image_url);
+  const heroUrl = activeUrl ?? item.image_url;
 
   return (
     <motion.div
@@ -103,22 +108,22 @@ export default function ProductCard({ item }: { item: InventoryItem }) {
       transition={{ duration: 0.3 }}
       className={`glass rounded-xl overflow-hidden ring-1 ${accent} flex flex-col group cursor-pointer`}
     >
-      {/* image */}
-      <div className="relative h-44 overflow-hidden bg-noir-2">
+      {/* hero image */}
+      <div className="relative h-40 overflow-hidden bg-noir-2">
         <AnimatePresence mode="wait">
           <motion.div
-            key={displayUrl ?? 'placeholder'}
+            key={heroUrl ?? 'placeholder'}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.18 }}
             className="absolute inset-0"
           >
-            {displayUrl ? (
+            {heroUrl ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
-                src={displayUrl}
-                alt={showLabel ? `${item.title} — box label` : item.title}
+                src={heroUrl}
+                alt={item.title}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
             ) : (
@@ -138,21 +143,29 @@ export default function ProductCard({ item }: { item: InventoryItem }) {
         <span className={`absolute top-2 left-2 text-[10px] font-display font-bold tracking-widest px-2 py-0.5 rounded-full ${badge}`}>
           {CATEGORY_LABEL[item.category]}
         </span>
-
-        {labelImageUrl && (
-          <button
-            onClick={e => { e.stopPropagation(); setShowLabel(v => !v); }}
-            className={`absolute bottom-2 right-2 text-[9px] font-display font-bold tracking-widest px-2 py-0.5 rounded-full border transition-colors ${
-              showLabel
-                ? 'bg-lime/20 text-lime border-lime/50'
-                : 'bg-noir/60 text-white/50 border-white/20 hover:border-white/40 hover:text-white/80'
-            }`}
-            title={showLabel ? 'Show shoe' : 'Show box label'}
-          >
-            {showLabel ? 'SHOE' : 'BOX'}
-          </button>
-        )}
       </div>
+
+      {/* thumbnail strip — shown whenever multiple images are available */}
+      {allImages.length > 1 && (
+        <div className="flex gap-1 px-2 py-1.5 bg-noir-2/60 border-t border-white/5">
+          {allImages.map((url, i) => (
+            <button
+              key={i}
+              onClick={e => { e.stopPropagation(); setActiveUrl(url); }}
+              className={`h-9 w-11 flex-shrink-0 rounded overflow-hidden ring-1 transition-all duration-150 ${
+                heroUrl === url
+                  ? 'ring-lime opacity-100'
+                  : 'ring-white/10 opacity-50 hover:opacity-90 hover:ring-white/30'
+              }`}
+              title={i === 0 ? 'Main photo' : `Detail ${i}`}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={url} alt="" className="w-full h-full object-cover" />
+            </button>
+          ))}
+        </div>
+      )}
+
 
       {/* body */}
       <div className="p-4 flex flex-col gap-2 flex-1">

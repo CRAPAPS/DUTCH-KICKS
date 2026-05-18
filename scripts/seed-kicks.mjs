@@ -194,6 +194,27 @@ const KICKS = [
     primaryImage: 'W Nike Pegasus Premium Womans 9 $125.jpeg',
     extraImages: ['W Nike Pegasus Premium Womans 9 $125 (2).jpeg'],
   },
+  {
+    title: "Adidas Tekkira Cup Men's 7",
+    price: 80,
+    metadata: { sku: null, size: 7, colorway: 'Multi', gender: 'mens', size_label: "Men's 7" },
+    primaryImage: 'Tekkira Cup Adidas Mens 7 $80 (2).jpeg',
+    extraImages: ['Tekkira Cup Adidas Mens 7 $80.jpeg'],
+  },
+  {
+    title: "Adidas Streettalk Women's 7",
+    price: 70,
+    metadata: { sku: null, size: 7, colorway: 'Multi', gender: 'womens', size_label: "Women's 7" },
+    primaryImage: 'Adidas Streettalk Woman 7 $70 (2).jpeg',
+    extraImages: ['Adidas Streettalk Woman 7 $70.jpeg'],
+  },
+  {
+    title: "Adidas Grand Court Alpha 00s Women's 6",
+    price: 65,
+    metadata: { sku: null, size: 6, colorway: 'Multi', gender: 'womens', size_label: "Women's 6" },
+    primaryImage: "Adidas Grand Court Alpha 00s Woman's 6 $65 (2).jpeg",
+    extraImages: ["Adidas Grand Court Alpha 00s Woman's 6 $65.jpeg"],
+  },
 ]
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
