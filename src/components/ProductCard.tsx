@@ -1,6 +1,7 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import type { InventoryItem } from '@/types/inventory';
 
 const CATEGORY_LABEL: Record<string, string> = {
@@ -84,9 +85,16 @@ function ImagePlaceholder({ category }: { category: string }) {
 export default function ProductCard({ item }: { item: InventoryItem }) {
   const accent = categoryAccent(item.category);
   const badge  = categoryBadge(item.category);
+  const [showLabel, setShowLabel] = useState(false);
 
   const isAuto = (item.category === 'fight' || item.category === 'baseball' || item.category === 'basketball')
     && item.metadata.autograph;
+
+  const labelImageUrl = (item.category === 'kicks' || item.category === 'skate')
+    ? (item.metadata as { label_image_url?: string | null }).label_image_url
+    : null;
+
+  const displayUrl = showLabel && labelImageUrl ? labelImageUrl : item.image_url;
 
   return (
     <motion.div
@@ -97,16 +105,27 @@ export default function ProductCard({ item }: { item: InventoryItem }) {
     >
       {/* image */}
       <div className="relative h-44 overflow-hidden bg-noir-2">
-        {item.image_url ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={item.image_url}
-            alt={item.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          />
-        ) : (
-          <ImagePlaceholder category={item.category} />
-        )}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={displayUrl ?? 'placeholder'}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="absolute inset-0"
+          >
+            {displayUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={displayUrl}
+                alt={showLabel ? `${item.title} — box label` : item.title}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+            ) : (
+              <ImagePlaceholder category={item.category} />
+            )}
+          </motion.div>
+        </AnimatePresence>
 
         {item.status !== 'available' && (
           <div className="absolute inset-0 bg-noir/70 flex items-center justify-center">
@@ -119,6 +138,20 @@ export default function ProductCard({ item }: { item: InventoryItem }) {
         <span className={`absolute top-2 left-2 text-[10px] font-display font-bold tracking-widest px-2 py-0.5 rounded-full ${badge}`}>
           {CATEGORY_LABEL[item.category]}
         </span>
+
+        {labelImageUrl && (
+          <button
+            onClick={e => { e.stopPropagation(); setShowLabel(v => !v); }}
+            className={`absolute bottom-2 right-2 text-[9px] font-display font-bold tracking-widest px-2 py-0.5 rounded-full border transition-colors ${
+              showLabel
+                ? 'bg-lime/20 text-lime border-lime/50'
+                : 'bg-noir/60 text-white/50 border-white/20 hover:border-white/40 hover:text-white/80'
+            }`}
+            title={showLabel ? 'Show shoe' : 'Show box label'}
+          >
+            {showLabel ? 'SHOE' : 'BOX'}
+          </button>
+        )}
       </div>
 
       {/* body */}

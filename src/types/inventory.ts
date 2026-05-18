@@ -13,12 +13,12 @@ interface BaseItem {
 
 export interface KicksItem extends BaseItem {
   category: 'kicks';
-  metadata: { sku: string | null; size: number; colorway: string };
+  metadata: { sku: string | null; size: number; colorway: string; label_image_url?: string | null; size_label?: string | null };
 }
 
 export interface SkateItem extends BaseItem {
   category: 'skate';
-  metadata: { sku: string | null; size: number; colorway: string };
+  metadata: { sku: string | null; size: number; colorway: string; label_image_url?: string | null };
 }
 
 export interface FightItem extends BaseItem {
