@@ -12,7 +12,7 @@ export default function PrivacyPage() {
         <LegalHeader title="Privacy Policy" updated="1 May 2025" />
 
         <Section title="1. Who We Are">
-          <p>Dutch Kicks ("we", "us", "our") operates the website dutchkicks.com and conducts live resale commerce via the Whatnot platform. We are committed to protecting your personal information and your right to privacy.</p>
+          <p>Dutch Kicks (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;) operates the website dutchkicks.com and conducts live resale commerce via the Whatnot platform. We are committed to protecting your personal information and your right to privacy.</p>
           <p>For any privacy-related questions, contact us at <a href="mailto:sales@dutchkicks.com" className="text-gold hover:underline">sales@dutchkicks.com</a>.</p>
         </Section>
 
@@ -44,7 +44,7 @@ export default function PrivacyPage() {
         <Section title="4. Third-Party Services">
           <p>We share data with the following trusted third parties solely to operate our service:</p>
           <ul>
-            <li><strong className="text-white/80">Whatnot</strong> — our live commerce sales platform. Transactions, shipping, and buyer data are governed by Whatnot's own privacy policy.</li>
+            <li><strong className="text-white/80">Whatnot</strong> — our live commerce sales platform. Transactions, shipping, and buyer data are governed by Whatnot&apos;s own privacy policy.</li>
             <li><strong className="text-white/80">Supabase</strong> — database and authentication infrastructure. Data is stored on servers within the EU/US region.</li>
             <li><strong className="text-white/80">Hostinger</strong> — web hosting and server infrastructure.</li>
             <li><strong className="text-white/80">Anthropic (Claude API)</strong> — powers our automated listing and pricing tools. No personal buyer data is transmitted to Anthropic.</li>
@@ -65,7 +65,7 @@ export default function PrivacyPage() {
           <ul>
             <li>Access the personal data we hold about you</li>
             <li>Request correction of inaccurate data</li>
-            <li>Request deletion of your data ("right to be forgotten")</li>
+            <li>Request deletion of your data (&quot;right to be forgotten&quot;)</li>
             <li>Object to or restrict certain processing</li>
             <li>Data portability</li>
           </ul>
@@ -81,7 +81,7 @@ export default function PrivacyPage() {
         </Section>
 
         <Section title="10. Changes to This Policy">
-          <p>We may update this Privacy Policy from time to time. The "Last Updated" date at the top of this page reflects the most recent revision. Continued use of the site after changes constitutes acceptance of the updated policy.</p>
+          <p>We may update this Privacy Policy from time to time. The &quot;Last Updated&quot; date at the top of this page reflects the most recent revision. Continued use of the site after changes constitutes acceptance of the updated policy.</p>
         </Section>
       </div>
     </div>
