@@ -82,7 +82,12 @@ function ImagePlaceholder({ category }: { category: string }) {
   );
 }
 
-export default function ProductCard({ item }: { item: InventoryItem }) {
+const cardVariants = {
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+};
+
+export default function ProductCard({ item, onClick }: { item: InventoryItem; onClick?: () => void }) {
   const accent = categoryAccent(item.category);
   const badge  = categoryBadge(item.category);
 
@@ -103,10 +108,11 @@ export default function ProductCard({ item }: { item: InventoryItem }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
+      variants={cardVariants}
       className={`glass rounded-xl overflow-hidden ring-1 ${accent} flex flex-col group cursor-pointer`}
+      onClick={onClick}
+      whileHover={{ y: -2, transition: { duration: 0.15 } }}
+      whileTap={{ scale: 0.98 }}
     >
       {/* hero image */}
       <div className="relative h-40 overflow-hidden bg-noir-2">

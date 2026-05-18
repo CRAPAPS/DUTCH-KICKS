@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import ProductCard from '@/components/ProductCard';
+import InventoryGrid from '@/components/InventoryGrid';
 import InventoryFilter from '@/components/InventoryFilter';
 import { createClient } from '@/lib/supabase/server';
 import type { InventoryItem, ItemCategory } from '@/types/inventory';
@@ -48,11 +48,7 @@ export default async function InventoryPage({ searchParams }: Props) {
           No items in this category yet.
         </div>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-          {items.map(item => (
-            <ProductCard key={item.id} item={item} />
-          ))}
-        </div>
+        <InventoryGrid items={items} />
       )}
     </div>
   );
