@@ -215,6 +215,34 @@ const KICKS = [
     primaryImage: "Adidas Grand Court Alpha 00s Woman's 6 $65 (2).jpeg",
     extraImages: ["Adidas Grand Court Alpha 00s Woman's 6 $65.jpeg"],
   },
+  {
+    title: "Adidas Light Racer 7.0 Men's 7",
+    price: 50,
+    metadata: { sku: null, size: 7, colorway: 'White/Grey', gender: 'mens', size_label: "Men's 7" },
+    primaryImage: "Adidas light racer 7.0 white-grey Men's 7 & $50.jpeg",
+    extraImages: ["Adidas light racer 7.0 white-grey Men's 7 & $50 (2).jpeg"],
+  },
+  {
+    title: "Adidas SuperNova EASE W Women's 7",
+    price: 65,
+    metadata: { sku: null, size: 7, colorway: 'Multi', gender: 'womens', size_label: "Women's 7" },
+    primaryImage: "Adidas SuperNova EASE W Woman's 7 $65.jpeg",
+    extraImages: ["Adidas SuperNova EASE W Woman's 7 $65 (2).jpeg"],
+  },
+  {
+    title: "Adidas VL Courts 3.0 Black-White-Gum Women's 11",
+    price: 70,
+    metadata: { sku: null, size: 11, colorway: 'Black/White/Gum', gender: 'womens', size_label: "Women's 11" },
+    primaryImage: "Adidas VL Courts 3.0 Black-White-Gum Woman's 11 $70.jpeg",
+    extraImages: ["Adidas VL Courts 3.0 Black-White-Gum Woman's 11 $70 (2).jpeg"],
+  },
+  {
+    title: "New Balance 1000 White Gris Women's 6.5",
+    price: 135,
+    metadata: { sku: null, size: 6.5, colorway: 'White/Gris', gender: 'womens', size_label: "Women's 6.5" },
+    primaryImage: "New Balance 1000 White Gris Woman's 6 and half $135.jpeg",
+    extraImages: ["New Balance 1000 White Gris Woman's 6 and half $135 (2).jpeg"],
+  },
 ]
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -285,9 +313,11 @@ for (const shoe of KICKS) {
   // Upload primary image
   const primaryUrl = await uploadImage(shoe.primaryImage)
 
-  // Upload extras (stored in bucket for future multi-image gallery use)
+  // Upload extras and collect URLs for gallery
+  const galleryUrls = []
   for (const extra of shoe.extraImages) {
-    await uploadImage(extra)
+    const url = await uploadImage(extra)
+    if (url) galleryUrls.push(url)
   }
 
   // Check for existing record
@@ -311,7 +341,8 @@ for (const shoe of KICKS) {
     continue
   }
 
-  // Insert new record
+  // Insert new record — include gallery in metadata
+  const metadata = { ...shoe.metadata, ...(galleryUrls.length > 0 ? { gallery: galleryUrls } : {}) }
   const { error } = await supabase.from('inventory').insert({
     title: shoe.title,
     category: 'kicks',
@@ -319,7 +350,7 @@ for (const shoe of KICKS) {
     price: shoe.price,
     image_url: primaryUrl,
     ref_image_url: null,
-    metadata: shoe.metadata,
+    metadata,
   })
 
   if (error) {
