@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+import Link from 'next/link';
 import InventoryGrid from '@/components/InventoryGrid';
 import InventoryFilter from '@/components/InventoryFilter';
 import { createClient } from '@/lib/supabase/server';
@@ -44,8 +45,20 @@ export default async function InventoryPage({ searchParams }: Props) {
 
       {/* grid */}
       {items.length === 0 ? (
-        <div className="glass rounded-2xl p-16 text-center text-white/30 font-mono text-sm">
-          No items in this category yet.
+        <div className="glass rounded-2xl p-16 text-center">
+          <div className="text-5xl mb-4">📦</div>
+          <div className="font-display font-black text-xl text-white/40 uppercase tracking-wide mb-2">
+            Dropping Soon
+          </div>
+          <p className="text-white/30 font-mono text-sm mb-6">
+            No items in this category yet — check back after the next live show.
+          </p>
+          <Link
+            href="/inventory"
+            className="font-display font-black tracking-widest text-sm uppercase bg-lime text-noir px-6 py-2.5 rounded-full hover:scale-105 transition-transform inline-block"
+          >
+            Browse All Inventory
+          </Link>
         </div>
       ) : (
         <InventoryGrid items={items} />

@@ -159,43 +159,39 @@ export default async function HomePage() {
       )}
 
       {/* ── Category cards ── */}
-      <section className="max-w-6xl mx-auto px-6 pb-24 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4">
-        <Link href="/inventory?category=kicks" className="glass-lime rounded-2xl p-6 group hover:opacity-90 transition-all">
-          <div className="text-4xl mb-3">👟</div>
-          <div className="font-display font-black text-xl text-lime uppercase tracking-wide">Kicks</div>
-          <div className="text-white/40 text-sm mt-1">{items.filter(i => i.category === 'kicks').length} pairs</div>
-        </Link>
+      {(() => {
+        const cats = [
+          { key: 'kicks',      emoji: '👟', label: 'Kicks',      unit: 'pairs',      glass: 'glass-lime',                    text: 'text-lime'     },
+          { key: 'fight',      emoji: '🥊', label: 'UFC Cards',  unit: 'grails',     glass: 'glass-gold',                    text: 'text-gold'     },
+          { key: 'baseball',   emoji: '⚾', label: 'Baseball',   unit: 'cards',      glass: 'glass-gold',                    text: 'text-gold'     },
+          { key: 'basketball', emoji: '🏀', label: 'Basketball', unit: 'cards',      glass: 'glass border border-orange/30', text: 'text-orange'   },
+          { key: 'watches',    emoji: '⌚', label: 'Watches',    unit: 'timepieces', glass: 'glass border border-white/15',  text: 'text-white/80' },
+          { key: 'skate',      emoji: '🛹', label: 'Skate',      unit: 'drops',      glass: 'glass border border-lime/20',   text: 'text-lime'     },
+        ] as const;
 
-        <Link href="/inventory?category=fight" className="glass-gold rounded-2xl p-6 group hover:opacity-90 transition-all">
-          <div className="text-4xl mb-3">🥊</div>
-          <div className="font-display font-black text-xl text-gold uppercase tracking-wide">UFC Cards</div>
-          <div className="text-white/40 text-sm mt-1">{items.filter(i => i.category === 'fight').length} grails</div>
-        </Link>
-
-        <Link href="/inventory?category=baseball" className="glass-gold rounded-2xl p-6 group hover:opacity-90 transition-all">
-          <div className="text-4xl mb-3">⚾</div>
-          <div className="font-display font-black text-xl text-gold uppercase tracking-wide">Baseball</div>
-          <div className="text-white/40 text-sm mt-1">{items.filter(i => i.category === 'baseball').length} cards</div>
-        </Link>
-
-        <Link href="/inventory?category=basketball" className="glass-orange rounded-2xl p-6 group hover:opacity-90 transition-all">
-          <div className="text-4xl mb-3">🏀</div>
-          <div className="font-display font-black text-xl text-orange uppercase tracking-wide">Basketball</div>
-          <div className="text-white/40 text-sm mt-1">{items.filter(i => i.category === 'basketball').length} cards</div>
-        </Link>
-
-        <Link href="/inventory?category=watches" className="glass rounded-2xl p-6 group hover:opacity-90 transition-all border border-white/15">
-          <div className="text-4xl mb-3">⌚</div>
-          <div className="font-display font-black text-xl text-white/80 uppercase tracking-wide">Watches</div>
-          <div className="text-white/40 text-sm mt-1">{items.filter(i => i.category === 'watches').length} timepieces</div>
-        </Link>
-
-        <Link href="/inventory?category=skate" className="glass rounded-2xl p-6 group hover:opacity-90 transition-all border border-lime/20">
-          <div className="text-4xl mb-3">🛹</div>
-          <div className="font-display font-black text-xl text-lime uppercase tracking-wide">Skate</div>
-          <div className="text-white/40 text-sm mt-1">{items.filter(i => i.category === 'skate').length} drops</div>
-        </Link>
-      </section>
+        return (
+          <section className="max-w-6xl mx-auto px-6 pb-24 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4">
+            {cats.map(({ key, emoji, label, unit, glass, text }) => {
+              const count = items.filter(i => i.category === key).length;
+              const href  = count > 0 ? `/inventory?category=${key}` : '/inventory';
+              return (
+                <Link key={key} href={href} className={`relative ${glass} rounded-2xl p-6 hover:opacity-90 transition-all overflow-hidden`}>
+                  {count === 0 && (
+                    <span className="absolute top-3 right-3 font-mono text-[10px] tracking-widest uppercase text-white/30 bg-white/5 px-2 py-0.5 rounded-full border border-white/10">
+                      Soon
+                    </span>
+                  )}
+                  <div className="text-4xl mb-3">{emoji}</div>
+                  <div className={`font-display font-black text-xl ${text} uppercase tracking-wide`}>{label}</div>
+                  <div className="text-white/40 text-sm mt-1">
+                    {count > 0 ? `${count} ${unit}` : 'Dropping soon'}
+                  </div>
+                </Link>
+              );
+            })}
+          </section>
+        );
+      })()}
     </>
   );
 }
