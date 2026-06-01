@@ -1,5 +1,5 @@
 export type ItemStatus   = 'available' | 'sold' | 'pending';
-export type ItemCategory = 'kicks' | 'skate' | 'fight' | 'comics' | 'baseball' | 'basketball' | 'watches';
+export type ItemCategory = 'kicks' | 'skate' | 'fight' | 'comics' | 'baseball' | 'basketball' | 'watches' | 'pokemon';
 
 interface BaseItem {
   id: string;
@@ -46,4 +46,9 @@ export interface WatchItem extends BaseItem {
   metadata: { brand: string; model: string; reference?: string; condition: string; box_papers?: boolean; gallery?: string[] };
 }
 
-export type InventoryItem = KicksItem | SkateItem | FightItem | ComicsItem | BaseballItem | BasketballItem | WatchItem;
+export interface PokemonItem extends BaseItem {
+  category: 'pokemon';
+  metadata: { character: string; set_name: string; card_number?: string | null; serial?: string | null; grade?: string; gallery?: string[] };
+}
+
+export type InventoryItem = KicksItem | SkateItem | FightItem | ComicsItem | BaseballItem | BasketballItem | WatchItem | PokemonItem;

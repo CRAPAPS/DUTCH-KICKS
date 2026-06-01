@@ -21,6 +21,7 @@ export default async function HomePage() {
     { label: 'Basketball', count: items.filter(i => i.category === 'basketball').length, accent: 'text-orange' },
     { label: 'Watches',    count: items.filter(i => i.category === 'watches').length,    accent: 'text-white/70' },
     { label: 'Skate',      count: items.filter(i => i.category === 'skate').length,      accent: 'text-lime' },
+    { label: 'Pokémon',    count: items.filter(i => i.category === 'pokemon').length,    accent: 'text-yellow-400' },
   ];
 
   const tickerItems = items.map(i => i.title);
@@ -166,7 +167,8 @@ export default async function HomePage() {
           { key: 'baseball',   emoji: '⚾', label: 'Baseball',   unit: 'cards',      glass: 'glass-gold',                    text: 'text-gold'     },
           { key: 'basketball', emoji: '🏀', label: 'Basketball', unit: 'cards',      glass: 'glass border border-orange/30', text: 'text-orange'   },
           { key: 'watches',    emoji: '⌚', label: 'Watches',    unit: 'timepieces', glass: 'glass border border-white/15',  text: 'text-white/80' },
-          { key: 'skate',      emoji: '🛹', label: 'Skate',      unit: 'drops',      glass: 'glass border border-lime/20',   text: 'text-lime'     },
+          { key: 'skate',      emoji: '🛹', label: 'Skate',      unit: 'drops',      glass: 'glass border border-lime/20',     text: 'text-lime'       },
+          { key: 'pokemon',    emoji: '🃏', label: 'Pokémon',    unit: 'slabs',      glass: 'glass border border-yellow-400/30', text: 'text-yellow-400'  },
         ] as const;
 
         return (

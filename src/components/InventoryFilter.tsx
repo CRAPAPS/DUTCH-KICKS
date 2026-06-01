@@ -12,6 +12,7 @@ const FILTERS: { key: ItemCategory | 'all'; label: string }[] = [
   { key: 'basketball', label: 'BASKETBALL' },
   { key: 'watches',    label: 'WATCHES'    },
   { key: 'comics',     label: 'COMICS'     },
+  { key: 'pokemon',    label: 'POKÉMON'    },
 ];
 
 function activeClass(isActive: boolean, key: string) {
