@@ -76,7 +76,7 @@ const CARDS = [
       serial: '6147388035',
       grade: 'CGC GEM MINT 10',
     },
-    image: 'WhatsApp Image 2026-05-27 at 00.12.54.jpeg',
+    image: 'pokemon-pikachu-kor-ninety-nine-5-cgc-gem-mint-10.jpeg',
   },
   {
     title: 'Bulbasaur – Pokemon Playing Cards KOR Ninety-Nine #3 CGC PRISTINE 10',
@@ -88,7 +88,7 @@ const CARDS = [
       serial: '6147388023',
       grade: 'CGC PRISTINE 10',
     },
-    image: 'WhatsApp Image 2026-05-27 at 00.13.00.jpeg',
+    image: 'pokemon-bulbasaur-kor-ninety-nine-3-cgc-pristine-10.jpeg',
   },
 ]
 
